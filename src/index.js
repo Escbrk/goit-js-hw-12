@@ -19,14 +19,13 @@ const params = {
   BASE_URL: 'https://pixabay.com/api/',
 };
 
-let currentPage = 1;
-// let counter = 0;
-
+let currentPage = 1
+const per_page = 40
 let lightbox = new SimpleLightbox('.gallery a');
 
-async function getGaleryItems(page = 1) {
+async function getGaleryItems(page = currentPage) {
   const data = await fetch(
-    `${params.BASE_URL}?key=${params.API_KEY}&q=${refs.input.value}&image_type=photo&orientation=horizontal&safesearch=truepage=${page}&per_page=4`
+    `${params.BASE_URL}?key=${params.API_KEY}&q=${refs.input.value}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${per_page}`
   ).then(resp => {
     if (!resp.ok) {
       throw new Error(resp.statusText);
@@ -42,6 +41,7 @@ refs.loadBtn.addEventListener('click', onClick);
 
 function onSearch(e) {
   e.preventDefault();
+  currentPage = 1;
 
   if (refs.input.value.trim() === '') {
     return iziToast.error({
@@ -54,7 +54,7 @@ function onSearch(e) {
 
   getGaleryItems()
     .then(data => {
-      refs.gallery.innerHTML = createMarkup(data.hits);
+      refs.gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
       lightbox.refresh();
     })
     .catch(err => console.error(err));
@@ -65,15 +65,15 @@ function onSearch(e) {
 function onClick(e) {
   e.preventDefault();
 
-
   currentPage += 1;
-  getGaleryItems(currentPage).then(data =>
-  {
-    refs.loader.innerHTML = '<span class="loader"></span>'
-    refs.gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits))
-    refs.loader.innerHTML = '';
+  getGaleryItems(currentPage).then(data => {
+    // refs.loader.innerHTML = '<span class="loader"></span>';
+    refs.gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
+
+    if (data.totalHits / per_page <= currentPage) {
+      refs.loadBtn.hidden = true;
     }
-  );
+  });
 }
 function createMarkup(arr) {
   if (arr.length === 0) {
