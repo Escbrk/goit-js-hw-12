@@ -36,7 +36,6 @@ function onSearch(e) {
   
   if (refs.input.value.trim() === '') {
     
-    // refs.gallery.innerHTML = ''
     return iziToast.error({
       message: 'Sorry, the field must be filled in!',
       position: 'topRight',
