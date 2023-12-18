@@ -90,7 +90,7 @@ function onClick(e) {
     const galeryItem = document.querySelector('.gallery-item');
     let rect = galeryItem.getBoundingClientRect();
     scrollBy({
-      top: rect.height * 3.5,
+      top: rect.height * 3,
       behavior: 'smooth',
     });
   });
