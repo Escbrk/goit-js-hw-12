@@ -17,21 +17,25 @@
 }
 
 .gallery-img {
-  width: 300px;
-  height: 200px;
-  max-width: 100%;
+  width: 100%;
+  height: 250px;
+}
+p {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
 }
 
 .text-container {
-  width: 300px;
   display: flex;
-  gap: 10px;
   justify-content: space-around;
   text-align: center;
+  width: 100%;
 }
 .gallery-item {
   outline: 1px solid black;
   border-radius: 3px;
+  width: calc((100% - 4 * 24px) / 5);
 }
 
 .text-container p {
@@ -68,9 +72,9 @@
 }
 
 .js-load {
-position: relative;
-left: 50%;
-transform: translate(-50%, 0);
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 
 button {
