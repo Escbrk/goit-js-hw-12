@@ -15,24 +15,23 @@ const refs = {
 
 const params = {
   API_KEY: '41227446-81114c3a771220f4777577230',
-  BASE_URL: 'https://pixabay.com/api/',
+  // BASE_URL: 'https://pixabay.com/api/',
 };
+axios.defaults.baseURL = 'https://pixabay.com/api/';
 
 let currentPage = 1;
 const per_page = 40;
 let lightbox = new SimpleLightbox('.gallery a');
 
 async function getGaleryItems(page = currentPage) {
-  const data = await fetch(
-    `${params.BASE_URL}?key=${params.API_KEY}&q=${refs.input.value}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${per_page}`
-  ).then(resp => {
-    if (!resp.ok) {
-      throw new Error(resp.statusText);
-    }
-
-    return resp.json();
-  });
+  const data = await axios
+    .get(
+      `?key=${params.API_KEY}&q=${refs.input.value}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${per_page}`
+    )
+    .then(resp => resp.data)
+    .catch(err => console.error(err));
   return data;
+  cl;
 }
 
 refs.searchBtn.addEventListener('click', onSearch);
@@ -89,7 +88,6 @@ function onClick(e) {
 
     const galeryItem = document.querySelector('.gallery-item');
     let rect = galeryItem.getBoundingClientRect();
-    console.log(rect);
     scrollBy({
       top: rect.height * 3,
       behavior: 'smooth',
