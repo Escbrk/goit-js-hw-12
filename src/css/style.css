@@ -18,6 +18,7 @@
 
 .gallery-img {
   object-fit: cover;
+  border: 1pm solid white
 }
 p {
   margin: 0;
