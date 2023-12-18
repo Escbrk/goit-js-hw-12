@@ -10,8 +10,7 @@ const refs = {
   searchBtn: document.querySelector('[type="submit"]'),
   gallery: document.querySelector('.gallery'),
   loadBtn: document.querySelector('.js-load'),
-  loader: document.querySelector('.js-loader'),
-  loadDiv: document.querySelector('.load-container'),
+  loadDiv: document.querySelector('.js-loader'),
 };
 
 const params = {
@@ -19,8 +18,8 @@ const params = {
   BASE_URL: 'https://pixabay.com/api/',
 };
 
-let currentPage = 1
-const per_page = 40
+let currentPage = 1;
+const per_page = 40;
 let lightbox = new SimpleLightbox('.gallery a');
 
 async function getGaleryItems(page = currentPage) {
@@ -43,38 +42,60 @@ function onSearch(e) {
   e.preventDefault();
   currentPage = 1;
 
+  refs.gallery.innerHTML = '<span class="loader"></span>';
+
   if (refs.input.value.trim() === '') {
     return iziToast.error({
       message: 'Sorry, the field must be filled in!',
       position: 'topRight',
     });
   }
-
-  refs.gallery.innerHTML = '<span class="loader"></span>';
-
   getGaleryItems()
     .then(data => {
-      refs.gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
+      refs.gallery.innerHTML = createMarkup(data.hits);
       lightbox.refresh();
+
+      if (per_page >= data.totalHits) {
+        refs.loadBtn.hidden = true;
+      } else {
+        refs.loadBtn.hidden = false;
+      }
     })
     .catch(err => console.error(err));
-
-  refs.loadBtn.hidden = false;
 }
 
 function onClick(e) {
   e.preventDefault();
-
   currentPage += 1;
+
+  refs.loadDiv.innerHTML = '<span class="loader"></span>';
+  refs.loadBtn.hidden = true;
+
   getGaleryItems(currentPage).then(data => {
-    // refs.loader.innerHTML = '<span class="loader"></span>';
     refs.gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
+    lightbox.refresh();
 
     if (data.totalHits / per_page <= currentPage) {
       refs.loadBtn.hidden = true;
+      refs.loadDiv.innerHTML = '';
+      return iziToast.info({
+        message: "We're sorry, but you've reached the end of search results.",
+        position: 'topRight',
+      });
+    } else if (data.totalHits / per_page >= currentPage) {
+      refs.loadDiv.innerHTML = '';
+      refs.loadBtn.hidden = false;
     }
+
+    const galeryItem = document.querySelector('.gallery-item');
+    let rect = galeryItem.getBoundingClientRect();
+    scrollBy({
+      top: rect.height * 3.5,
+      behavior: 'smooth',
+    });
   });
 }
+
 function createMarkup(arr) {
   if (arr.length === 0) {
     iziToast.error({
