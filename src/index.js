@@ -89,7 +89,6 @@ function onClick(e) {
 
     const galeryItem = document.querySelector('.gallery-item');
     let rect = galeryItem.getBoundingClientRect();
-    console.log(rect);
     scrollBy({
       top: rect.height * 3,
       behavior: 'smooth',
