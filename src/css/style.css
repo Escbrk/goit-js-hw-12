@@ -32,6 +32,7 @@ p {
   justify-content: space-around;
   text-align: center;
   width: 100%;
+  gap: 5px;
 }
 .gallery-item {
   outline: 1px solid black;
