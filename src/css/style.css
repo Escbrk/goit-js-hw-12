@@ -17,8 +17,7 @@
 }
 
 .gallery-img {
-  width: 100%;
-  height: 250px;
+  object-fit: cover;
 }
 p {
   margin: 0;
