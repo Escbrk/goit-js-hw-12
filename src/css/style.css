@@ -32,7 +32,6 @@
 .gallery-item {
   outline: 1px solid black;
   border-radius: 3px;
-  gap: 24px;
 }
 
 .text-container p {
@@ -109,4 +108,5 @@ input:hover {
 .js-load {
   width: 125px;
   height: 40px;
+  padding: 8px 16px;
 }

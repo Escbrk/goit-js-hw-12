@@ -42,13 +42,13 @@ function onSearch(e) {
   e.preventDefault();
   currentPage = 1;
 
-  refs.gallery.innerHTML = '<span class="loader"></span>';
-
   if (refs.input.value.trim() === '') {
     return iziToast.error({
       message: 'Sorry, the field must be filled in!',
       position: 'topRight',
     });
+  } else {
+    refs.gallery.innerHTML = '<span class="loader"></span>';
   }
   getGaleryItems()
     .then(data => {
@@ -89,6 +89,7 @@ function onClick(e) {
 
     const galeryItem = document.querySelector('.gallery-item');
     let rect = galeryItem.getBoundingClientRect();
+    console.log(rect);
     scrollBy({
       top: rect.height * 3,
       behavior: 'smooth',
